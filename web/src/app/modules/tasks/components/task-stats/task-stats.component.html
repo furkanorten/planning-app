@@ -1,0 +1,92 @@
+<div class="task-stats" [class.loading]="loading">
+  <!-- Urgent Alert -->
+  <div class="urgent-alert" *ngIf="showUrgentAlert">
+    <lucide-icon name="alert-triangle" size="16"></lucide-icon>
+    <span>{{ urgentAlertText }}</span>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card total">
+      <div class="stat-icon">
+        <lucide-icon name="list" size="24"></lucide-icon>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.totalTasks }}</h3>
+        <p>Total Tasks</p>
+      </div>
+    </div>
+
+    <div class="stat-card completed">
+      <div class="stat-icon">
+        <lucide-icon name="check-circle" size="24"></lucide-icon>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.completedTasks }}</h3>
+        <p>Completed</p>
+      </div>
+    </div>
+
+    <div class="stat-card active">
+      <div class="stat-icon">
+        <lucide-icon name="clock" size="24"></lucide-icon>
+      </div>
+      <div class="stat-content">
+        <h3>{{ activeTasks }}</h3>
+        <p>Active</p>
+      </div>
+    </div>
+
+    <div class="stat-card overdue" *ngIf="stats.overdueTasks > 0">
+      <div class="stat-icon">
+        <lucide-icon name="alert-triangle" size="24"></lucide-icon>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.overdueTasks }}</h3>
+        <p>Overdue</p>
+      </div>
+    </div>
+
+    <div class="stat-card due-today" *ngIf="stats.dueTodayTasks > 0">
+      <div class="stat-icon">
+        <lucide-icon name="calendar-days" size="24"></lucide-icon>
+      </div>
+      <div class="stat-content">
+        <h3>{{ stats.dueTodayTasks }}</h3>
+        <p>Due Today</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress Overview -->
+  <div class="progress-overview" *ngIf="stats.totalTasks > 0">
+    <div class="progress-header">
+      <h4>Overall Progress</h4>
+      <span class="progress-percentage">{{ completionPercentage }}%</span>
+    </div>
+
+    <div class="progress-bar">
+      <div
+        class="progress-fill"
+        [style.width]="progressBarWidth"
+        [style.background-color]="progressBarColor">
+      </div>
+    </div>
+
+    <div class="progress-details">
+      <span class="completed-count">{{ stats.completedTasks }} completed</span>
+      <span class="remaining-count">{{ activeTasks }} remaining</span>
+    </div>
+
+    <div class="productivity-status">
+      <lucide-icon name="target" size="16"></lucide-icon>
+      <span>{{ productivityStatus }}</span>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner"></div>
+    <p>Loading statistics...</p>
+  </div>
+</div>

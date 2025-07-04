@@ -7,18 +7,21 @@ const cookieParser = require('cookie-parser');
 dotenv.config();
 const app = express();
 
+// Middleware
 app.use(cors({
     origin: ['http://localhost:4200', 'http://192.168.1.102:19000', 'http://192.168.1.103:19000'],
     credentials: true
 }));
-
 app.use(express.json());
 app.use(cookieParser());
 
 // Routes
-app.use('/api/auth', require('./routes/auth.routes'));
-app.use('/api/tasks', require('./routes/task.routes'));
-app.use('/api/notes', require('./routes/note.routes')); // 🔥 NEW
+app.use('/api/auth', require('./src/routes/auth.routes'));
+app.use('/api/tasks', require('./src/routes/task.routes'));
+app.use('/api/notes', require('./src/routes/note.routes'));
+app.use('/api/expenses', require('./src/routes/expense.routes'));
+app.use('/api/shopping', require('./src/routes/shopping.routes'));
+app.use('/api/dashboard', require('./src/routes/dashboard.routes'));
 
 // Test endpoint
 app.get('/', (req, res) => {
@@ -34,11 +37,11 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// 404 handler
-app.use('*', (req, res) => {
+// 404 handler (fallback)
+app.use((req, res) => {
     res.status(404).json({
         success: false,
-        message: `Route ${req.originalUrl} not found`
+        message: `Route ${req.method} ${req.originalUrl} not found`
     });
 });
 
@@ -52,7 +55,7 @@ app.use((err, req, res, next) => {
     });
 });
 
-// MongoDB Connection
+// MongoDB connection and server start
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         console.log('✅ Connected to MongoDB');

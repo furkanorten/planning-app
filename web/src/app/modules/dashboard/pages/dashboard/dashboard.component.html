@@ -4,7 +4,10 @@
     <div class="header-content">
       <h1>Dashboard</h1>
       <div class="header-actions">
-        <span class="welcome-text">Welcome back! 👋</span>
+        <span class="welcome-text" *ngIf="hasData">Welcome back! 👋</span>
+        <button class="refresh-btn" (click)="refreshDashboard()" [disabled]="loading" title="Refresh">
+          <lucide-icon name="refresh-cw" class="button-icon" size="16" [class.spinning]="loading"></lucide-icon>
+        </button>
         <button class="logout-btn" (click)="logout()">
           <lucide-icon name="log-out" class="button-icon" size="16"></lucide-icon>
           Logout
@@ -13,116 +16,196 @@
     </div>
   </header>
 
-  <!-- Stats Overview -->
-  <section class="stats-section">
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon tasks">
-          <lucide-icon name="check-square" size="24"></lucide-icon>
-        </div>
-        <div class="stat-content">
-          <h3>{{ stats.totalTasks }}</h3>
-          <p>Total Tasks</p>
-        </div>
-      </div>
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="loading-spinner"></div>
+    <p>Loading your dashboard...</p>
+  </div>
 
-      <div class="stat-card">
-        <div class="stat-icon completed">
-          <lucide-icon name="check-square" size="24"></lucide-icon>
-        </div>
-        <div class="stat-content">
-          <h3>{{ stats.completedTasks }}</h3>
-          <p>Completed</p>
-        </div>
-      </div>
+  <!-- Error State -->
+  <div class="error-container" *ngIf="error && !loading">
+    <lucide-icon name="alert-circle" size="48" class="error-icon"></lucide-icon>
+    <h3>Oops! Something went wrong</h3>
+    <p>{{ error }}</p>
+    <button class="btn btn-primary" (click)="refreshDashboard()">
+      <lucide-icon name="refresh-cw" size="16"></lucide-icon>
+      Try Again
+    </button>
+  </div>
 
-      <div class="stat-card">
-        <div class="stat-icon notes">
-          <lucide-icon name="file-text" size="24"></lucide-icon>
-        </div>
-        <div class="stat-content">
-          <h3>{{ stats.totalNotes }}</h3>
-          <p>Notes</p>
-        </div>
-      </div>
+  <!-- Empty State - New User -->
+  <div class="empty-state" *ngIf="isEmpty && !loading && !error">
+    <div class="empty-content">
+      <lucide-icon name="smile" size="64" class="empty-icon"></lucide-icon>
+      <h2>Welcome to Your Dashboard! 🎉</h2>
+      <p>You're all set! Start organizing your life by creating your first task, note, or expense.</p>
 
-      <div class="stat-card">
-        <div class="stat-icon expenses">
-          <lucide-icon name="dollar-sign" size="24"></lucide-icon>
-        </div>
-        <div class="stat-content">
-          <h3>${{ stats.monthlyExpenses }}</h3>
-          <p>This Month</p>
+      <div class="getting-started">
+        <h3>Get Started:</h3>
+        <div class="starter-actions">
+          <button class="starter-btn task" (click)="createTask()">
+            <lucide-icon name="plus" size="20"></lucide-icon>
+            <span>Create First Task</span>
+          </button>
+          <button class="starter-btn note" (click)="createNote()">
+            <lucide-icon name="pen-tool" size="20"></lucide-icon>
+            <span>Write First Note</span>
+          </button>
+          <button class="starter-btn expense" (click)="addExpense()">
+            <lucide-icon name="credit-card" size="20"></lucide-icon>
+            <span>Track First Expense</span>
+          </button>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- Main Content -->
-  <main class="dashboard-main">
-    <div class="main-grid">
-      <!-- Recent Tasks -->
-      <div class="content-card">
-        <div class="card-header">
-          <h2>Recent Tasks</h2>
-          <a href="#" class="view-all">View All</a>
+  <!-- Dashboard Content -->
+  <div class="dashboard-content" *ngIf="hasData && !loading && !error">
+
+    <!-- Stats Overview -->
+    <section class="stats-section">
+      <div class="stats-grid">
+        <div class="stat-card tasks" (click)="navigateToTasks()">
+          <div class="stat-icon">
+            <lucide-icon name="check-square" size="24"></lucide-icon>
+          </div>
+          <div class="stat-content">
+            <h3>{{ stats.totalTasks }}</h3>
+            <p>Total Tasks</p>
+            <small *ngIf="stats.totalTasks > 0">{{ completionPercentage }}% completed</small>
+          </div>
         </div>
-        <div class="card-content">
-          <div class="task-item" *ngFor="let task of recentTasks">
-            <div class="task-info">
-              <span class="task-title">{{ task.title }}</span>
-              <span class="task-date">{{ task.createdAt | date:'shortDate' }}</span>
+
+        <div class="stat-card completed">
+          <div class="stat-icon">
+            <lucide-icon name="check-circle" size="24"></lucide-icon>
+          </div>
+          <div class="stat-content">
+            <h3>{{ stats.completedTasks }}</h3>
+            <p>Completed</p>
+            <small *ngIf="activeTasks > 0">{{ activeTasks }} remaining</small>
+          </div>
+        </div>
+
+        <div class="stat-card notes" (click)="navigateToNotes()">
+          <div class="stat-icon">
+            <lucide-icon name="file-text" size="24"></lucide-icon>
+          </div>
+          <div class="stat-content">
+            <h3>{{ stats.totalNotes }}</h3>
+            <p>Notes</p>
+          </div>
+        </div>
+
+        <div class="stat-card expenses" (click)="navigateToExpenses()">
+          <div class="stat-icon">
+            <lucide-icon name="dollar-sign" size="24"></lucide-icon>
+          </div>
+          <div class="stat-content">
+            <h3>${{ stats.monthlyExpenses | number:'1.0-0' }}</h3>
+            <p>This Month</p>
+          </div>
+        </div>
+
+        <div class="stat-card shopping" (click)="navigateToShopping()" *ngIf="stats.activeShoppingLists > 0">
+          <div class="stat-icon">
+            <lucide-icon name="shopping-cart" size="24"></lucide-icon>
+          </div>
+          <div class="stat-content">
+            <h3>{{ stats.activeShoppingLists }}</h3>
+            <p>Shopping Lists</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+      <div class="main-grid">
+
+        <!-- Recent Tasks -->
+        <div class="content-card">
+          <div class="card-header">
+            <h2>Recent Tasks</h2>
+            <a [routerLink]="['/tasks']" class="view-all">View All</a>
+          </div>
+          <div class="card-content">
+            <div class="task-list" *ngIf="hasRecentTasks">
+              <div class="task-item" *ngFor="let task of recentTasks">
+                <div class="task-info">
+                  <span class="task-title" [class.completed]="task.completed">{{ task.title }}</span>
+                  <div class="task-meta">
+                    <span class="task-category"
+                          [style.background-color]="getCategoryColor(task.category || 'other')">
+                      {{ task.category || 'Other' }}
+                    </span>
+                    <span class="task-date">{{ task.createdAt | date:'shortDate' }}</span>
+                  </div>
+                </div>
+                <span class="task-status" [class]="task.completed ? 'completed' : 'pending'">
+                  <lucide-icon [name]="task.completed ? 'check-circle' : 'clock'" size="14"></lucide-icon>
+                  {{ task.completed ? 'Completed' : 'Pending' }}
+                </span>
+              </div>
             </div>
-            <span class="task-status" [class]="task.completed ? 'completed' : 'pending'">
-              {{ task.completed ? 'Completed' : 'Pending' }}
-            </span>
+
+            <div class="empty-section" *ngIf="!hasRecentTasks">
+              <lucide-icon name="check-square" size="32" class="empty-icon"></lucide-icon>
+              <p>No tasks yet. <a [routerLink]="['/tasks']">Create your first task</a> to get started!</p>
+            </div>
           </div>
-          <div class="empty-state" *ngIf="recentTasks.length === 0">
-            <p>No tasks yet. Start by creating your first task!</p>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="content-card">
+          <div class="card-header">
+            <h2>Quick Actions</h2>
+          </div>
+          <div class="card-content">
+            <div class="quick-actions">
+              <button class="action-btn tasks" (click)="createTask()">
+                <lucide-icon name="plus" class="action-icon" size="20"></lucide-icon>
+                <span>Add Task</span>
+              </button>
+              <button class="action-btn notes" (click)="createNote()">
+                <lucide-icon name="pen-tool" class="action-icon" size="20"></lucide-icon>
+                <span>New Note</span>
+              </button>
+              <button class="action-btn shopping" (click)="createShoppingList()">
+                <lucide-icon name="shopping-cart" class="action-icon" size="20"></lucide-icon>
+                <span>Shopping List</span>
+              </button>
+              <button class="action-btn expenses" (click)="addExpense()">
+                <lucide-icon name="credit-card" class="action-icon" size="20"></lucide-icon>
+                <span>Add Expense</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Quick Actions -->
-      <div class="content-card">
+      <!-- Recent Activity -->
+      <div class="content-card full-width" *ngIf="hasRecentActivity">
         <div class="card-header">
-          <h2>Quick Actions</h2>
+          <h2>Recent Activity</h2>
         </div>
         <div class="card-content">
-          <div class="quick-actions">
-            <button class="action-btn tasks">
-              <lucide-icon name="plus" class="action-icon" size="20"></lucide-icon>
-              <span>Add Task</span>
-            </button>
-            <button class="action-btn notes">
-              <lucide-icon name="pen-tool" class="action-icon" size="20"></lucide-icon>
-              <span>New Note</span>
-            </button>
-            <button class="action-btn shopping">
-              <lucide-icon name="shopping-cart" class="action-icon" size="20"></lucide-icon>
-              <span>Shopping List</span>
-            </button>
-            <button class="action-btn expenses">
-              <lucide-icon name="credit-card" class="action-icon" size="20"></lucide-icon>
-              <span>Add Expense</span>
-            </button>
+          <div class="activity-list">
+            <div class="activity-item" *ngFor="let activity of recentActivity">
+              <div class="activity-icon" [class]="activity.type">
+                <lucide-icon [name]="activity.icon" size="16"></lucide-icon>
+              </div>
+              <div class="activity-content">
+                <span class="activity-title">{{ activity.title }}</span>
+                <span class="activity-time">{{ formatActivityTime(activity.timestamp) }}</span>
+              </div>
+              <span class="activity-type">{{ activity.action }}</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Expense Chart Placeholder -->
-    <div class="content-card full-width">
-      <div class="card-header">
-        <h2>Monthly Expenses</h2>
-      </div>
-      <div class="card-content">
-        <div class="chart-placeholder">
-          <lucide-icon name="bar-chart-3" size="48" class="chart-icon"></lucide-icon>
-          <p>Expense chart will be implemented here</p>
-          <small>Coming soon with Chart.js integration</small>
-        </div>
-      </div>
-    </div>
-  </main>
+    </main>
+  </div>
 </div>
