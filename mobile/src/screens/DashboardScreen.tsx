@@ -651,8 +651,8 @@ const styles = StyleSheet.create({
         }),
     },
     statIcon: {
-        width: 40,
-        height: 40,
+        width: 46,
+        height: 46,
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
@@ -676,14 +676,14 @@ const styles = StyleSheet.create({
         minWidth: 0,
     },
     statNumber: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: '600',
         color: '#1e293b',
         fontFamily: 'Poppins-SemiBold',
         numberOfLines: 1,
     },
     statLabel: {
-        fontSize: 11,
+        fontSize: 10,
         color: '#64748b',
         fontWeight: '400',
         fontFamily: 'Poppins-Regular',
@@ -736,7 +736,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     actionButtonText: {
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: '500',
         color: '#374151',
         flex: 1,
