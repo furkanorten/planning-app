@@ -17,11 +17,6 @@ app.use(cookieParser());
 
 // Routes
 app.use('/api/auth', require('./src/routes/auth.routes'));
-app.use('/api/tasks', require('./src/routes/task.routes'));
-app.use('/api/notes', require('./src/routes/note.routes'));
-app.use('/api/expenses', require('./src/routes/expense.routes'));
-app.use('/api/shopping', require('./src/routes/shopping.routes'));
-app.use('/api/dashboard', require('./src/routes/dashboard.routes'));
 
 // Test endpoint
 app.get('/', (req, res) => {

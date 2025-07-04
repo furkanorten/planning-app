@@ -34,6 +34,38 @@
         font-size: 0.875rem;
       }
 
+      .refresh-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+          background: #f1f5f9;
+          border-color: #cbd5e1;
+        }
+
+        &:disabled {
+          cursor: not-allowed;
+          opacity: 0.6;
+        }
+
+        .button-icon {
+          color: #64748b;
+          transition: transform 0.2s;
+
+          &.spinning {
+            animation: spin 1s linear infinite;
+          }
+        }
+      }
+
       .logout-btn {
         display: flex;
         align-items: center;
@@ -54,6 +86,79 @@
           background: #dc2626;
         }
       }
+    }
+  }
+}
+
+// Loading container
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e2e8f0;
+    border-top: 3px solid #4f46e5;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: #64748b;
+    font-size: 0.875rem;
+  }
+}
+
+// Error container
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+
+  .error-icon {
+    color: #ef4444;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    color: #1e293b;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+  }
+
+  p {
+    color: #64748b;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: #4338ca;
     }
   }
 }
@@ -80,6 +185,7 @@
   align-items: center;
   gap: 1rem;
   transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
 
   &:hover {
     transform: translateY(-2px);
@@ -114,6 +220,10 @@
       background: #fce7f3;
       color: #e91e63;
     }
+    &.shopping {
+      background: #ecfdf5;
+      color: #10b981;
+    }
   }
 
   .stat-content {
@@ -128,6 +238,13 @@
       color: #64748b;
       margin: 0.25rem 0 0 0;
       font-size: 0.875rem;
+    }
+
+    small {
+      display: block;
+      color: #94a3b8;
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
     }
   }
 }
@@ -240,6 +357,25 @@
   text-align: center;
   padding: 2rem;
   color: #64748b;
+
+  .empty-icon {
+    color: #cbd5e1;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin: 0;
+
+    a {
+      color: #4f46e5;
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
 }
 
 // Quick Actions
@@ -306,6 +442,48 @@
   }
 }
 
+// Recent Activity
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f1f5f9;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .activity-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: #f8fafc;
+    border-radius: 0.5rem;
+    color: #64748b;
+  }
+
+  .activity-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    .activity-title {
+      font-weight: 500;
+      color: #1e293b;
+      font-size: 0.875rem;
+    }
+
+    .activity-time {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+  }
+}
+
 // Chart Placeholder
 .chart-placeholder {
   text-align: center;
@@ -330,6 +508,12 @@
   }
 }
 
+// Spin animation
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 // Responsive Design
 @media (max-width: 768px) {
   .dashboard-header {
@@ -340,8 +524,10 @@
         font-size: 1.5rem;
       }
 
-      .welcome-text {
-        display: none;
+      .header-actions {
+        .welcome-text {
+          display: none;
+        }
       }
     }
   }
@@ -352,9 +538,46 @@
 
   .stats-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .stat-card {
+    padding: 1rem;
+    gap: 0.75rem;
+
+    .stat-icon {
+      width: 3rem;
+      height: 3rem;
+    }
+
+    .stat-content {
+      h3 {
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+  .main-grid {
+    gap: 1rem;
   }
 
   .quick-actions {
     grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .action-btn {
+    padding: 1rem;
+    min-height: 70px;
+  }
+
+  .content-card {
+    .card-header {
+      padding: 1rem 1rem 0;
+    }
+
+    .card-content {
+      padding: 1rem;
+    }
   }
 }
