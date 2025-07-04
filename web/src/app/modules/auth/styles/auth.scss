@@ -1,4 +1,4 @@
-// Color Variables (SCSS Variables olarak tanımlama)
+// Color Variables
 $primary-color: #4f46e5;
 $primary-hover: #4338ca;
 $primary-light: #dbeafe;
@@ -22,7 +22,6 @@ $shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 $shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 
-// Auth Page Container
 .auth-page {
   min-height: 100vh;
   background: linear-gradient(135deg, $gray-50 0%, #e0e7ff 100%);
@@ -34,7 +33,6 @@ $shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
-// Main Auth Container
 .auth-container {
   background: $white;
   border-radius: 1.5rem;
@@ -52,7 +50,6 @@ $shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   }
 }
 
-// Auth Header
 .auth-header {
   text-align: center;
   margin-bottom: 2.5rem;
@@ -90,7 +87,6 @@ $shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   }
 }
 
-// Form Styles
 .auth-form {
   .form-group {
     margin-bottom: 1.5rem;
@@ -188,7 +184,6 @@ $shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   }
 }
 
-// Global Error Alert
 .global-error {
   margin-bottom: 1.5rem;
 
@@ -222,7 +217,6 @@ $shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   }
 }
 
-// Auth Button
 .auth-button {
   width: 100%;
   padding: 1rem;
@@ -280,7 +274,6 @@ $shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   }
 }
 
-// Auth Footer
 .auth-footer {
   text-align: center;
 
@@ -303,7 +296,6 @@ $shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   }
 }
 
-// Background Decoration
 .auth-bg-decoration {
   position: absolute;
   inset: 0;
@@ -342,7 +334,6 @@ $shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   }
 }
 
-// Animations
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -361,7 +352,6 @@ $shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   }
 }
 
-// Responsive Design
 @media (max-width: 640px) {
   .auth-page {
     padding: 1rem;
@@ -398,7 +388,6 @@ $shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   }
 }
 
-// High contrast mode support
 @media (prefers-contrast: high) {
   .auth-container {
     border: 2px solid $gray-800;
@@ -417,7 +406,6 @@ $shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   }
 }
 
-// Reduced motion support
 @media (prefers-reduced-motion: reduce) {
   .auth-button {
     transition: none;

@@ -35,19 +35,16 @@ const RegisterScreen = ({ navigation }: Props) => {
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
-    // Android back button handling
     useFocusEffect(
         React.useCallback(() => {
             if (Platform.OS === 'android') {
                 const onBackPress = () => {
-                    // Go to Login instead of stack navigation
                     navigation.replace('Login');
                     return true;
                 };
                 const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
                 return () => subscription.remove();
             }
-            // iOS için özel handling gerekmez
         }, [navigation])
     );
 
@@ -75,7 +72,6 @@ const RegisterScreen = ({ navigation }: Props) => {
         try {
             await registerApi({ name, email, password });
 
-            // Success alert with navigation
             Alert.alert(
                 'Registration Successful! 🎉',
                 'Your account has been created successfully. Please login to continue.',
@@ -413,8 +409,8 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Regular',
         backgroundColor: 'white',
         color: '#1e293b',
-        textAlignVertical: 'center', // Android için
-        includeFontPadding: false, // Android için
+        textAlignVertical: 'center',
+        includeFontPadding: false,
     },
     inputError: {
         borderColor: colors.error,
@@ -478,15 +474,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        height: 24, // Icon boyutuna eşit
+        height: 24,
     },
     buttonText: {
         fontSize: 16,
         fontFamily: 'Poppins-Bold',
         color: 'white',
         marginLeft: 8,
-        lineHeight: 20, // Font size'a yakın değer
-        includeFontPadding: false, // Android için
+        lineHeight: 20,
+        includeFontPadding: false,
     },
     footer: {
         alignItems: 'center',

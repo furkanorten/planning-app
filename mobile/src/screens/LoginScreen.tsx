@@ -36,11 +36,9 @@ const LoginScreen = ({ navigation }: Props) => {
     const [errorMessage, setErrorMessage] = useState('');
     const { login: loginContext } = useAuth();
 
-    // Android back button handling
     useFocusEffect(
         React.useCallback(() => {
             const onBackPress = () => {
-                // Exit app instead of going back in auth stack
                 BackHandler.exitApp();
                 return true;
             };
@@ -74,7 +72,6 @@ const LoginScreen = ({ navigation }: Props) => {
         try {
             const response = await loginApi({ email, password });
             await loginContext(response.data.token);
-            // Auth context will handle navigation automatically
         } catch (err: any) {
             const message = err?.response?.data?.message || 'Login failed. Please try again.';
             setErrorMessage(message);
@@ -375,8 +372,8 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Regular',
         backgroundColor: 'white',
         color: '#1e293b',
-        textAlignVertical: 'center', // Android için
-        includeFontPadding: false, // Android için
+        textAlignVertical: 'center',
+        includeFontPadding: false,
     },
     inputError: {
         borderColor: colors.error,
@@ -439,15 +436,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        height: 24, // Icon boyutuna eşit
+        height: 24,
     },
     buttonText: {
         fontSize: 16,
         fontFamily: 'Poppins-Bold',
         color: 'white',
         marginLeft: 8,
-        lineHeight: 20, // Font size'a yakın değer
-        includeFontPadding: false, // Android için
+        lineHeight: 20,
+        includeFontPadding: false,
     },
     footer: {
         alignItems: 'center',

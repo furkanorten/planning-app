@@ -4,7 +4,6 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   providers: [
-    // HTTP Interceptors
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

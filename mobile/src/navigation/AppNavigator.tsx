@@ -8,13 +8,11 @@ import RegisterScreen from '../screens/RegisterScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import { useAuth } from '../context/authContext';
 
-// Auth Stack için type tanımları
 export type AuthStackParamList = {
     Login: undefined;
     Register: undefined;
 };
 
-// App Stack için type tanımları
 export type AppStackParamList = {
     Dashboard: undefined;
 };
@@ -22,7 +20,6 @@ export type AppStackParamList = {
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 const AppStack = createNativeStackNavigator<AppStackParamList>();
 
-// Auth Stack - Giriş yapmamış kullanıcılar için
 const AuthNavigator = () => {
     return (
         <AuthStack.Navigator
@@ -35,7 +32,6 @@ const AuthNavigator = () => {
     );
 };
 
-// App Stack - Giriş yapmış kullanıcılar için
 const AppNavigator = () => {
     return (
         <AppStack.Navigator
@@ -46,11 +42,9 @@ const AppNavigator = () => {
     );
 };
 
-// Ana Navigator - Auth durumuna göre stack'leri yönetir
 const RootNavigator = () => {
     const { isLoggedIn, isLoading } = useAuth();
 
-    // Auth durumu kontrol edilirken loading göster
     if (isLoading) {
         return (
             <View style={{

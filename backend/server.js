@@ -7,7 +7,6 @@ const cookieParser = require('cookie-parser');
 dotenv.config();
 const app = express();
 
-// Middleware
 app.use(cors({
     origin: ['http://localhost:4200', 'http://192.168.1.102:19000', 'http://192.168.1.103:19000'],
     credentials: true
@@ -15,15 +14,12 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-// Routes
 app.use('/api/auth', require('./src/routes/auth.routes'));
 
-// Test endpoint
 app.get('/', (req, res) => {
     res.send('Mobile App API is running ✅');
 });
 
-// Health check endpoint
 app.get('/api/health', (req, res) => {
     res.status(200).json({
         status: 'success',
@@ -32,7 +28,6 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// 404 handler (fallback)
 app.use((req, res) => {
     res.status(404).json({
         success: false,
@@ -40,7 +35,6 @@ app.use((req, res) => {
     });
 });
 
-// Global error handler
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({
@@ -50,7 +44,6 @@ app.use((err, req, res, next) => {
     });
 });
 
-// MongoDB connection and server start
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         console.log('✅ Connected to MongoDB');

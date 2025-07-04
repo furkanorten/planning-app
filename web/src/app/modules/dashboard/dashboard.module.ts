@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { DashboardRoutingModule } from "./dashboard-routing.module";
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
-// Lucide Icons Import
 import {
   LucideAngularModule,
   CheckSquare,
@@ -16,12 +15,20 @@ import {
   CreditCard,
   LogOut,
   BarChart3,
-  // Missing icons
   RefreshCw,
   CheckCircle,
   AlertCircle,
   Smile,
-  Clock
+  Clock,
+  ChevronRight,
+  Search,
+  Filter,
+  ArrowUp,
+  ArrowDown,
+  X,
+  Edit2,
+  Trash2,
+  Calendar
 } from 'lucide-angular';
 
 @NgModule({
@@ -42,12 +49,20 @@ import {
       CreditCard,
       LogOut,
       BarChart3,
-      // Missing icons added
       RefreshCw,
       CheckCircle,
       AlertCircle,
       Smile,
-      Clock
+      Clock,
+      ChevronRight,
+      Search,
+      Filter,
+      ArrowUp,
+      ArrowDown,
+      X,
+      Edit2,
+      Trash2,
+      Calendar
     })
   ]
 })

@@ -5,7 +5,6 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 
-// Lucide Icons Import
 import { LucideAngularModule, Shield, ShieldCheck, Mail, Lock, AlertCircle, XCircle, LogIn, Loader2, User, UserPlus } from 'lucide-angular';
 
 @NgModule({

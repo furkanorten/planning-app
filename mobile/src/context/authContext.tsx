@@ -41,11 +41,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const logout = async () => {
         try {
-            // API'ye logout isteği gönder
             await logoutApi();
         } catch (error) {
             console.warn('Logout API call failed:', error);
-            // API hatası olsa bile local token'ı temizle
         } finally {
             await tokenService.removeToken();
             setIsLoggedIn(false);
