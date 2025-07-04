@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+:root {
+  --primary-color: #4f46e5;
+  --accent-color: #6366f1;
+  --bg-color: #f9fafb;
+  --text-color: #1f2937;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* Force Poppins on all form controls and Angular Material elements */
+input,
+textarea,
+select,
+button,
+.mat-input-element,
+.mat-form-field-label,
+.mat-button-wrapper,
+.mat-select-value,
+.mat-form-field,
+.mat-checkbox-label,
+.mat-slide-toggle-content,
+.mat-radio-label-content {
+  font-family: 'Poppins', sans-serif !important;
+}

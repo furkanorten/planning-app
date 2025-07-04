@@ -1,0 +1,94 @@
+<div class="auth-page">
+  <div class="auth-container">
+    <!-- Header -->
+    <div class="auth-header">
+      <div class="auth-icon">
+        <lucide-icon name="shield-check" class="icon"></lucide-icon>
+      </div>
+      <h1>Welcome Back!</h1>
+      <p class="auth-subtitle">Please sign in to your account</p>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <div class="input-container">
+          <lucide-icon name="mail" class="input-icon"></lucide-icon>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="Enter your email"
+            [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+          />
+        </div>
+        <div class="error-message"
+             *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          <lucide-icon name="alert-circle" class="error-icon"></lucide-icon>
+          Valid email is required
+        </div>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-container">
+          <lucide-icon name="lock" class="input-icon"></lucide-icon>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="Enter your password"
+            [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+          />
+        </div>
+        <div class="error-message"
+             *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          <lucide-icon name="alert-circle" class="error-icon"></lucide-icon>
+          Minimum 6 characters required
+        </div>
+      </div>
+
+      <!-- Global Error Message -->
+      <div class="global-error" *ngIf="errorMessage">
+        <div class="error-alert">
+          <lucide-icon name="x-circle" class="error-icon"></lucide-icon>
+          <span>{{ errorMessage }}</span>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="auth-button"
+        [disabled]="loading || loginForm.invalid"
+        [class.loading]="loading">
+        <span *ngIf="!loading" class="button-content">
+          <lucide-icon name="log-in" class="button-icon"></lucide-icon>
+          Sign In
+        </span>
+        <span *ngIf="loading" class="loading-content">
+          <lucide-icon name="loader-2" class="spinner"></lucide-icon>
+          Signing in...
+        </span>
+      </button>
+    </form>
+
+    <!-- Footer -->
+    <div class="auth-footer">
+      <p class="auth-link">
+        Don't have an account?
+        <a routerLink="/auth/register" class="link-button">Create one here</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Background Decoration -->
+  <div class="auth-bg-decoration">
+    <div class="decoration-circle circle-1"></div>
+    <div class="decoration-circle circle-2"></div>
+    <div class="decoration-circle circle-3"></div>
+  </div>
+</div>
